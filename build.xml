@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="slf4j-net-commons-logging">
+    <property environment="env"/>
+    <property name="ECLIPSE_HOME" value="../../../../eclipse-jee-indigo-SR1-win32-x86_64/eclipse"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    
+	<property name="dist" value="./dist"/>
+	
+	<property name="version" value="1.0.0"/>    
+    
+    <!--.NET properties -->
+    <property name="ikvm.dir" value="/Java/ikvm/ikvm-7.3.4830.0"/>
+    <property name="ikvmc" value="${ikvm.dir}/bin/ikvmc.exe"/>
+    
+    <path id="Maven Dependencies.libraryclasspath">
+        <pathelement location="../../.m2/repository/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar"/>
+    </path>
+    <path id="slf4j-net-commons-logging.classpath">
+        <pathelement location="bin"/>
+        <path refid="Maven Dependencies.libraryclasspath"/>
+        <pathelement location="lib/Common.Logging.jar"/>
+        <pathelement location="lib/mscorlib.jar"/>
+    </path>
+
+    <target name="dist"  depends="clean, build-project" >
+				
+        <mkdir dir="${dist}"/>
+				
+		<jar destfile="${dist}/slf4j-NetCommonLogging-${version}.jar" basedir="./bin"/>		
+					
+    </target>     
+    
+    <target name="checkForIKVM">
+        <condition property="IKVMAvailable">
+            <and>
+                <os family="windows"/>
+                <available file="${ikvmc}" property="ignored" />
+            </and>
+        </condition>
+    </target>
+
+	<!--  first, create docx4j.dll -->
+    <target name="dist.NET" depends="checkForIKVM,dist" if="IKVMAvailable" description="Build docx4j ImportXHTML .NET DLL files">
+        <echo>Building DLLs</echo>
+        
+        <!-- 
+		<path id="forIKVM">
+		    <pathelement location="${dist}/slf4j-NetCommonsLogger-${version}.jar" />
+	        <pathelement location="../../.m2/repository/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar"/>
+		</path>
+        <pathconvert refid="forIKVM" property="jars" pathsep=" "/>        
+		<exec executable="${ikvmc}">
+            <arg value="-out:${dist}/slf4j-NetCommonsLogger.dll" />
+            <arg value="-version:0.0.9" />
+            <arg value="-reference:dll/Common.Logging.dll" />
+            <arg value="-target:library" />
+            <arg line="${jars}" />
+        </exec>
+         -->
+         
+		<exec executable="${ikvmc}">
+            <arg value="-out:${dist}/slf4j-api.dll" />
+            <!-- <arg value="-keyfile:Plutext.snk" /> -->
+            <arg value="-version:1.7.6" />
+            <!-- <arg value="-resource:docx4j.properties=..." />  -->
+            <arg value="-target:library" />
+            <arg line="../../.m2/repository/org/slf4j/slf4j-api/1.7.5/slf4j-api-1.7.5.jar" />
+        </exec>    
+
+		<exec executable="${ikvmc}">
+            <arg value="-out:${dist}/slf4j-NetCommonLogging.dll" />
+            <!-- <arg value="-keyfile:Plutext.snk" /> -->
+            <arg value="-version:1.0.0" />
+            <!-- <arg value="-resource:docx4j.properties=..." />  -->
+            <arg value="-reference:dll/Common.Logging.dll" />
+            <arg value="-reference:${dist}/slf4j-api.dll" />
+            <arg value="-target:library" />
+            <arg line="${dist}/slf4j-NetCommonLogging-${version}.jar" />
+        </exec>
+								
+    </target>     
+    
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src/main/java">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src/main/java"/>
+            <classpath refid="slf4j-net-commons-logging.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>    
+    
+</project>
