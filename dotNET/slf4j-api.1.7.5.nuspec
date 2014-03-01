@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>slf4j-api</id>
+        <version>1.7.5</version>
+        <title>slf4j-api</title>
+        <authors>QOS.ch owns the copyright in slf4j</authors>
+        <licenseUrl>http://www.slf4j.org/license.html</licenseUrl>
+        <projectUrl>http://www.slf4j.org/</projectUrl>
+        <iconUrl>http://www.slf4j.org/images/logos/slf4j-logo.jpg</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>slf4j-api-1.7.5.jar converted to a DLL using IKVM</description>
+        <dependencies>
+            <dependency id="IKVM" version="7.3.4830.0" />
+        </dependencies>
+    </metadata>
+    <files>
+        <!-- src file name is versioned, so the various versions are readily available on GitHub-->
+        <file src="lib\net20\slf4j-api-1.7.5.dll" target="lib\net35\slf4j-api.dll" />
+    </files>
+</package>
