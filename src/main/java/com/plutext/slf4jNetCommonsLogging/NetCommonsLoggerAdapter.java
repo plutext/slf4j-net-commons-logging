@@ -491,25 +491,30 @@ public class NetCommonsLoggerAdapter extends MarkerIgnoringBase implements
 
 	public void log(Marker marker, String callerFQCN, int level, String msg,
 			Object[] argArray, Throwable t) {
+		
+		if (logger==null) return;
+		if (msg==null) return;
+		if (argArray==null) return;
+		
 		switch (level) {
-		case LocationAwareLogger.TRACE_INT:
-			logger.TraceFormat(msg, t, argArray);
-			return;
-		case LocationAwareLogger.DEBUG_INT:
-			logger.DebugFormat(msg, t, argArray);
-			return;
-		case LocationAwareLogger.INFO_INT:
-			logger.InfoFormat(msg, t, argArray);
-			return;
-		case LocationAwareLogger.WARN_INT:
-			logger.WarnFormat(msg, t, argArray);
-			return;
-		case LocationAwareLogger.ERROR_INT:
-			logger.ErrorFormat(msg, t, argArray);
-			return;
-		default:
-			throw new IllegalStateException("Level number " + level
-					+ " is not recognized.");
+			case LocationAwareLogger.TRACE_INT:
+				logger.TraceFormat(msg, t, argArray);
+				return;
+			case LocationAwareLogger.DEBUG_INT:
+				logger.DebugFormat(msg, t, argArray);
+				return;
+			case LocationAwareLogger.INFO_INT:
+				logger.InfoFormat(msg, t, argArray);
+				return;
+			case LocationAwareLogger.WARN_INT:
+				logger.WarnFormat(msg, t, argArray);
+				return;
+			case LocationAwareLogger.ERROR_INT:
+				logger.ErrorFormat(msg, t, argArray);
+				return;
+			default:
+				throw new IllegalStateException("Level number " + level
+						+ " is not recognized.");
 		}
 	}
 
