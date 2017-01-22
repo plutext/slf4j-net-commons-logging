@@ -46,12 +46,25 @@ or if you aren't using NuGet:
 https://github.com/plutext/slf4j-net-commons-logging/tree/master/dotNET/lib/net20
 and https://github.com/net-commons/common-logging/downloads
 
-If you get a ClassNotFoundException, one way around that may be to add:
 
+As Jeroen has explained, when there is no main assembly (eg in an ASP.NET application), the IKVM class loader can't find your assembly when the code is trying to dynamically load a class. So you'll want to add:
+ 
 ```java
             ikvm.runtime.Startup.addBootClassPathAssembly(
                 System.Reflection.Assembly.GetAssembly(
                     typeof(org.slf4j.impl.StaticLoggerBinder)));
+                    
+            ikvm.runtime.Startup.addBootClassPathAssembly(
+                System.Reflection.Assembly.GetAssembly(
+                    typeof(org.slf4j.LoggerFactory)));
+```         
+
+If you are using docx4j.NET, you should also add:
+
+```java
+            ikvm.runtime.Startup.addBootClassPathAssembly(
+                System.Reflection.Assembly.GetAssembly(
+                    typeof(org.docx4j.jaxb.Context)));                    
 ```         
 
 ## Developers
