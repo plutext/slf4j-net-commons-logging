@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>slf4j-NetCommonLogging</id>
-        <version>1.0.0</version>
+        <version>1.7.5.4</version>
         <title>slf4j-NetCommonLogging</title>
         <authors>Plutext Pty Ltd</authors>
         <licenseUrl>https://github.com/plutext/slf4j-net-commons-logging/blob/master/LICENSE</licenseUrl>
@@ -10,13 +10,12 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Unified logging facade for .NET and IKVM'd Java jars, piping SLF4J logs through to https://github.com/net-commons/common-logging</description>
         <dependencies>
-            <dependency id="IKVM" version="7.3.4830.0" />
-            <dependency id="slf4j-api" version="1.7.5" />
+            <dependency id="IKVM" version="8.1.5717.0" />
+            <dependency id="slf4j-api" version="1.7.5.4" />
             <dependency id="Common.Logging" version="2.1.2" />
         </dependencies>
     </metadata>
     <files>
-      <!-- src file name is versioned, so the various versions are readily available on GitHub-->
-      <file src="lib\net20\slf4j-NetCommonLogging-1.0.0.dll" target="lib\net35\slf4j-NetCommonLogging.dll" />
+      <file src="lib\net35\slf4j-NetCommonLogging.dll" target="lib\net35\slf4j-NetCommonLogging.dll" />
     </files>
 </package>

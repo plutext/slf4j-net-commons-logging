@@ -9,10 +9,12 @@
 	<property name="dist" value="./dist"/>
 	
 	<property name="slf4j-version" value="1.7.5"/>    
-	<property name="ncl-version" value="${slf4j-version}.2"/>    
+	<property name="ncl-version" value="${slf4j-version}.4"/>    
 	
-    <!--.NET properties -->
+    <!--.NET properties 
     <property name="ikvm.dir" value="/Java/ikvm/ikvm-7.3.4830.0"/>
+    -->
+    <property name="ikvm.dir" value="/Java/ikvm/ikvm-8.1.5717.0"/>
     <property name="ikvmc" value="${ikvm.dir}/bin/ikvmc.exe"/>
     
     <path id="slf4j-net-commons-logging.classpath">
@@ -41,6 +43,13 @@
 
     <target name="dist.NET" depends="checkForIKVM,dist" if="IKVMAvailable" 
         description="Build the .NET DLL files">
+        
+        <!--  Note 2014 12 03:  added snk, so I could copy strong named DLLs 
+              into docx4j VSTO project (which needs them for publication).
+              
+              For nuget uploads, comment out the snk 
+              
+              2017 01 22:  keep snk even for nuget.  Makes things simpler. -->
 
 		<echo/>
         <echo>Building slf4j-api DLL..</echo>
@@ -49,7 +58,8 @@
             <arg value="-out:dotNET/lib/net35/slf4j-api.dll" /> 
             
             <!-- <arg value="-keyfile:Plutext.snk" />  -->
-            <arg value="-version:${slf4j-version}" />
+            <arg value="-keyfile:Plutext.snk" />
+            <arg value="-version:${slf4j-version}.4" />
             <arg value="-target:library" />
             <arg line="lib/java/slf4j-api-${slf4j-version}.jar" />
         </exec>    
@@ -59,11 +69,20 @@
 		<echo/>
         <exec executable="${ikvmc}">
             <arg value="-out:dotNET/lib/net35/slf4j-NetCommonLogging.dll" />
-
             
-            <!-- <arg value="-keyfile:Plutext.snk" /> -->
+<!--             
+            <arg value="-nostdlib" />
+            <arg value="-lib:\windows\microsoft.net\framework64\v4.0.30319" />
+            <arg value="-r:mscorlib.dll" />            
+ -->
+ 
+            <arg value="-keyfile:Plutext.snk" />
             <arg value="-version:${ncl-version}" />
-            <arg value="-reference:lib/dotNET/Common.Logging.dll" />
+            <arg value="-reference:lib/dotNET/old/Common.Logging.dll" />
+<!--             
+            <arg value="-reference:lib/dotNET/packages/Common.Logging.3.3.1/lib/net35/Common.Logging.dll" />
+            <arg value="-reference:lib/dotNET/packages/Common.Logging.Core.3.3.1/lib/net35/Common.Logging.Core.dll" />
+             -->
             <arg value="-reference:dotNET/lib/net35/slf4j-api.dll" />
             <arg value="-target:library" />
             <arg line="${dist}/slf4j-NetCommonLogging-${ncl-version}.jar" />
