@@ -58,13 +58,13 @@ public class NetCommonsLoggerFactory implements ILoggerFactory
       if (slf4jLogger != null) {
         return slf4jLogger;
       } else {
-    	cli.Common.Logging.ILog log4jLogger;
+    	cli.Common.Logging.ILog cliLogger;
         if(name.equalsIgnoreCase(Logger.ROOT_LOGGER_NAME))
-          log4jLogger = LogManager.GetLogger(Logger.ROOT_LOGGER_NAME);
+          cliLogger = LogManager.GetLogger(Logger.ROOT_LOGGER_NAME);
         else
-          log4jLogger = LogManager.GetLogger(name);
+          cliLogger = LogManager.GetLogger(name);
 
-        Logger newInstance = new NetCommonsLoggerAdapter(log4jLogger);
+        Logger newInstance = new NetCommonsLoggerAdapter(cliLogger);
         Logger oldInstance = loggerMap.putIfAbsent(name, newInstance);
         return oldInstance == null ? newInstance : oldInstance;
       }

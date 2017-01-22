@@ -41,7 +41,7 @@ public class NetCommonsLoggerAdapter extends MarkerIgnoringBase implements
 
 	// WARN: Log4jLoggerAdapter constructor should have only package access so
 	// that
-	// only Log4jLoggerFactory be able to create one.
+	// only NetCommonsLoggerFactory be able to create one.
 	NetCommonsLoggerAdapter(cli.Common.Logging.ILog logger) {
 		this.logger = logger;
 		// this.name = logger.getName();
