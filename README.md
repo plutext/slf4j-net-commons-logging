@@ -6,6 +6,9 @@ Control the Java logging emitted by your
 IKVM'd dlls, coercing them into using the logging infrastructure
 you have in place on the .NET side.
 
+This repo contains both the Java code, and the dot NET artifacts
+for publishing to nuget.
+
 ## Motive
 
 By now, many Java libraries use slf4j for logging, so the user of the
